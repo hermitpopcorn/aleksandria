@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+  next:
+    build:
+      dockerfile: .docker/dev.Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - 'next-pnpm:/app/node_modules'
+    networks:
+      - next
+  mysql:
+    image: 'mysql:8.0'
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'next-mysql:/var/lib/mysql'
+    networks:
+      - next
+
+networks:
+  next:
+    driver: bridge
+
+volumes:
+  next-pnpm:
+    driver: local
+  next-mysql:
+    driver: local
