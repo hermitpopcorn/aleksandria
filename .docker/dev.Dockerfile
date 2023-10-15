@@ -8,6 +8,7 @@ WORKDIR /app
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
+RUN pnpm config set store-dir /pnpm/store/v3 --global
 RUN pnpm install --frozen-lockfile
 
 COPY . .
