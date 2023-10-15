@@ -1,6 +1,6 @@
 {
-  "name": "next-netlify-starter",
-  "version": "0.5.0",
+  "name": "aleksandria",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,11 +9,14 @@
   },
   "dependencies": {
     "cypress": "^10.0.3",
-    "next": "^12.1.5",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "next": "^13.5.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^4.18.0"
+    "@netlify/plugin-nextjs": "^4.18.0",
+    "@types/node": "20.8.6",
+    "@types/react": "18.2.28",
+    "typescript": "5.2.2"
   }
 }
