@@ -24,6 +24,18 @@ services:
       - 'next-mysql:/var/lib/mysql'
     networks:
       - next
+  phpmyadmin:
+    image: 'phpmyadmin/phpmyadmin:latest'
+    environment:
+      PMA_HOST: 'mysql'
+      PMA_USER: 'root'
+      PMA_PASSWORD: 'password'
+    ports:
+      - '8080:80'
+    networks:
+      - next
+    depends_on:
+      - mysql
 
 networks:
   next:
