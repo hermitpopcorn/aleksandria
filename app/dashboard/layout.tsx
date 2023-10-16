@@ -1,19 +1,21 @@
-import "@styles/globals.css";
+import NextAuthProvider from "@auth/provider";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Aleksandria",
+  title: "Dashboard",
   icons: "/favicon.ico",
 };
 
-export default function RootLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <NextAuthProvider>
+        <body>{children}</body>
+      </NextAuthProvider>
     </html>
   );
 }
