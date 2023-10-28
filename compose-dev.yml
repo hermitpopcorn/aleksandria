@@ -8,7 +8,7 @@ services:
       - '3000:3000'
     volumes:
       - .:/app
-      - 'next-pnpm:/app/node_modules'
+      - 'pnpm-store:/pnpm/store/v3'
     networks:
       - next
   mysql:
@@ -24,13 +24,25 @@ services:
       - 'next-mysql:/var/lib/mysql'
     networks:
       - next
+  phpmyadmin:
+    image: 'phpmyadmin/phpmyadmin:latest'
+    environment:
+      PMA_HOST: 'mysql'
+      PMA_USER: 'root'
+      PMA_PASSWORD: 'password'
+    ports:
+      - '8080:80'
+    networks:
+      - next
+    depends_on:
+      - mysql
 
 networks:
   next:
     driver: bridge
 
 volumes:
-  next-pnpm:
+  pnpm-store:
     driver: local
   next-mysql:
     driver: local
