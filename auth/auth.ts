@@ -18,6 +18,14 @@ export const authOptions = {
   session: {
     strategy: "database",
   },
+  callbacks: {
+    session: async ({ session, user }) => {
+      if (session?.user) {
+        session.user.id = Number(user.id);
+      }
+      return session;
+    },
+  },
 } satisfies NextAuthOptions;
 
 export function auth(
