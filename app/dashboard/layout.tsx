@@ -1,4 +1,5 @@
 import NextAuthProvider from "@auth/provider";
+import Sidebar from "@components/dashboard/sidebar/sidebar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +15,14 @@ export default async function DashboardLayout({
   return (
     <html lang="en">
       <NextAuthProvider>
-        <body>{children}</body>
+        <body>
+          <div className="min-h-screen flex flex-row">
+            <aside className="w-2/12 overflow-clip">
+              <Sidebar />
+            </aside>
+            <main>{children}</main>
+          </div>
+        </body>
       </NextAuthProvider>
     </html>
   );
