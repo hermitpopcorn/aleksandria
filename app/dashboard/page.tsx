@@ -1,11 +1,3 @@
-"use client";
-
-import { useSession } from "next-auth/react";
-
-export default function Page() {
-  useSession({
-    required: true,
-  });
-
+export default function DashboardPage() {
   return <p>(content)</p>;
 }

@@ -20,7 +20,7 @@ export default async function DashboardLayout({
             <aside className="w-2/12 overflow-clip">
               <Sidebar />
             </aside>
-            <main>{children}</main>
+            <main className="w-full">{children}</main>
           </div>
         </body>
       </NextAuthProvider>
