@@ -10,7 +10,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import ItemsList from "@components/dashboard/collections/items-list";
 import AddNewItemButton from "@components/dashboard/collections/btn-add-item";
 
-const getCollection = cache(async (hashid: string) => {
+const findCollection = cache(async (hashid: string) => {
   const session = await auth();
   const id = decodeHashid(hashid);
   try {
@@ -36,7 +36,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata | null> {
-  const collection = await getCollection(params.hashid);
+  const collection = await findCollection(params.hashid);
 
   return {
     title: `${collection?.name} Collection`,
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
 }
 
 export default async function CollectionDetailPage({ params }: Props) {
-  const collection = await getCollection(params.hashid);
+  const collection = await findCollection(params.hashid);
 
   return (
     <DashboardPage>
