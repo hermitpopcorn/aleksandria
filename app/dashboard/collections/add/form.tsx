@@ -41,6 +41,7 @@ export default function AddNewCollectionForm() {
     setIsSubmitting(false);
 
     router.push("/dashboard/collections");
+    router.refresh();
   };
 
   const getSubmitButton = () => {
