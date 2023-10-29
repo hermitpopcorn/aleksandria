@@ -2,7 +2,6 @@ import { auth } from "@auth/auth";
 import prisma from "db";
 import { Metadata } from "next";
 import { Session } from "next-auth";
-import { belongsToUser } from "prisma/helpers";
 import AddNewCollectionButton from "@components/dashboard/collections/btn-add-collection";
 import CollectionsList from "@components/dashboard/collections/list";
 import ContentHeader from "@components/dashboard/content-header";
@@ -34,6 +33,6 @@ export default async function CollectionsPage() {
   );
 }
 
-async function getCollectionList(user: Session): Promise<Array<Collection>> {
-  return await prisma.collection.findMany({ ...belongsToUser(user) });
+async function getCollectionList(session: Session): Promise<Array<Collection>> {
+  return await prisma.collection.findMany({ where: { userId: session!.user.id } });
 }
