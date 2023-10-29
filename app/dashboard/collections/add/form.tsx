@@ -6,7 +6,7 @@ import { postAddCollection } from "./actions";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
 
-type CollectionType = "books";
+type CollectionType = "book";
 
 export type FormValueTypes = {
   name: string;
@@ -18,7 +18,7 @@ export default function AddNewCollectionForm() {
 
   const [formValues, setFormValues] = useState<FormValueTypes>({
     name: "",
-    type: "books",
+    type: "book",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -98,7 +98,7 @@ export default function AddNewCollectionForm() {
           className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="input-collection-type"
         >
-          <option value="books">Books</option>
+          <option value="book">Books</option>
         </select>
       </div>
       {getSubmitButton()}
