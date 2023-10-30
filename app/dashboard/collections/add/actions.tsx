@@ -9,6 +9,10 @@ export async function postAddCollection(formValues: FormValueTypes): Promise<Col
   const session = await auth();
 
   return await prisma.collection.create({
-    data: { userId: session!.user.id, ...formValues },
+    data: {
+      userId: session!.user.id,
+      name: formValues.name.trim(),
+      type: formValues.type,
+    },
   });
 }
