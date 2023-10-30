@@ -7,8 +7,6 @@ import { decodeHashid } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import ItemsList from "@components/dashboard/collections/items-list";
-import AddNewItemButton from "@components/dashboard/collections/btn-add-item";
 import ItemDetailTable from "@components/dashboard/items/table-detail";
 import ContentSubheader from "@components/dashboard/content-subheader";
 
@@ -54,7 +52,7 @@ export default async function ItemDetailPage({ params }: Props) {
     <DashboardPage>
       <section className="mb-4">
         <ContentHeader>{item.title}</ContentHeader>
-        {item.titleAlphabetic ? (
+        {item.titleAlphabetic && item.titleAlphabetic != item.title ? (
           <ContentSubheader>{item.titleAlphabetic}</ContentSubheader>
         ) : null}
       </section>
