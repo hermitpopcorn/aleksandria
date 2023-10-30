@@ -7,8 +7,8 @@ import { decodeHashid } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import ItemsList from "@components/dashboard/collections/items-list";
 import AddNewItemButton from "@components/dashboard/collections/btn-add-item";
+import AlphabeticalItemsList from "@components/dashboard/items/alphabetical-list";
 
 const findCollection = cache(async (hashid: string) => {
   const session = await auth();
@@ -20,7 +20,11 @@ const findCollection = cache(async (hashid: string) => {
         id,
       },
       include: {
-        items: true,
+        items: {
+          orderBy: {
+            titleAlphabetic: "asc",
+          },
+        },
       },
     });
   } catch (err) {
@@ -58,7 +62,7 @@ export default async function CollectionDetailPage({ params }: Props) {
       </section>
 
       <section className="mb-4">
-        <ItemsList items={collection.items} />
+        <AlphabeticalItemsList items={collection.items} />
       </section>
     </DashboardPage>
   );
