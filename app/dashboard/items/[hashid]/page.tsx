@@ -57,7 +57,16 @@ export default async function ItemDetailPage({ params }: Props) {
         ) : null}
       </section>
 
-      <section className="mb-4">
+      <section className="mb-4 flex gap-4 flex-col lg:flex-row-reverse lg:justify-end">
+        {item.cover ? (
+          <div className="grow flex flex-row justify-center p-4">
+            <img
+              src={item.cover}
+              className="max-w-md max-h-screen rounded-xl"
+              alt="Cover image"
+            />
+          </div>
+        ) : null}
         <ItemDetailTable item={item} />
       </section>
     </DashboardPage>
