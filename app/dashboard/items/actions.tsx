@@ -47,3 +47,36 @@ async function findCollection(hashid: string): Promise<Collection> {
     },
   });
 }
+
+export async function editExistingItem(formValues: FormValueTypes): Promise<Item> {
+  const session = await auth();
+
+  if (!formValues.hashid) {
+    throw new Error("No ID supplied.");
+  }
+
+  const realId = decodeHashid(formValues.hashid!);
+
+  const collection = await findCollection(formValues.collectionHashid);
+
+  return await prisma.item.update({
+    where: {
+      collection: {
+        userId: session!.user.id,
+      },
+      id: realId,
+    },
+    data: {
+      collectionId: collection.id,
+      type: formValues.type,
+      title: formValues.title.trim(),
+      titleAlphabetic: formValues.titleAlphabetic.trim()
+        ? formValues.titleAlphabetic.trim()
+        : formValues.title.trim(),
+      isbn13: formValues.isbn13.trim() ? formValues.isbn13.trim() : null,
+      note: formValues.note.trim() ? formValues.note.trim() : null,
+      cover: formValues.cover.trim() ? formValues.cover.trim() : null,
+      copies: formValues.copies !== undefined ? Number(formValues.copies) : 1,
+    },
+  });
+}

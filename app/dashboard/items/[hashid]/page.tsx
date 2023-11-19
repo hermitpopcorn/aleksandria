@@ -9,6 +9,7 @@ import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import ItemDetailTable from "@components/dashboard/items/table-detail";
 import ContentSubheader from "@components/dashboard/content-subheader";
+import EditItemButton from "@components/dashboard/items/btn-edit-item";
 
 const findItem = cache(async (hashid: string) => {
   const session = await auth();
@@ -55,6 +56,10 @@ export default async function ItemDetailPage({ params }: Props) {
         {item.titleAlphabetic && item.titleAlphabetic != item.title ? (
           <ContentSubheader>{item.titleAlphabetic}</ContentSubheader>
         ) : null}
+      </section>
+
+      <section className="mb-4 flex flex-row justify-start gap-2">
+        <EditItemButton itemHashid={params.hashid} />
       </section>
 
       <section className="mb-4 flex gap-4 flex-col lg:flex-row-reverse lg:justify-end">
