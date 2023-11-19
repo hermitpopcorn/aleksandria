@@ -10,6 +10,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import ItemDetailTable from "@components/dashboard/items/table-detail";
 import ContentSubheader from "@components/dashboard/content-subheader";
 import EditItemButton from "@components/dashboard/items/btn-edit-item";
+import DeleteItemButton from "@components/dashboard/items/btn-delete-item";
 
 const findItem = cache(async (hashid: string) => {
   const session = await auth();
@@ -60,6 +61,7 @@ export default async function ItemDetailPage({ params }: Props) {
 
       <section className="mb-4 flex flex-row justify-start gap-2">
         <EditItemButton itemHashid={params.hashid} />
+        <DeleteItemButton itemHashid={params.hashid} />
       </section>
 
       <section className="mb-4 flex gap-4 flex-col lg:flex-row-reverse lg:justify-end">

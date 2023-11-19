@@ -80,3 +80,18 @@ export async function editExistingItem(formValues: FormValueTypes): Promise<Item
     },
   });
 }
+
+export async function deleteItem(hashid: string): Promise<Item> {
+  const session = await auth();
+
+  const realId = decodeHashid(hashid);
+
+  return await prisma.item.delete({
+    where: {
+      collection: {
+        userId: session!.user.id,
+      },
+      id: realId,
+    },
+  });
+}
