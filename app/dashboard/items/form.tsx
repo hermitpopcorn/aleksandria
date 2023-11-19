@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection, Item } from "@prisma/client";
 import { encodeId } from "app/api/hashids";
-import { postAddItem } from "./actions";
 
 type ItemType = "book";
 
 export type FormValueTypes = {
+  hashid?: string;
   collectionHashid: string;
   type: ItemType;
   title: string;
@@ -24,20 +24,31 @@ export type FormValueTypes = {
 type Props = {
   collections: Array<Collection>;
   selectedCollectionHashid?: string;
+  action: CallableFunction;
+  item?: Item;
 };
 
-export default function AddNewItemForm({ collections, selectedCollectionHashid }: Props) {
+export default function ItemForm({
+  collections,
+  selectedCollectionHashid,
+  action,
+  item,
+}: Props) {
   const router = useRouter();
 
   const [formValues, setFormValues] = useState<FormValueTypes>({
-    collectionHashid: selectedCollectionHashid ?? "",
-    type: "book",
-    title: "",
-    titleAlphabetic: "",
-    isbn13: "",
-    cover: "",
-    note: "",
-    copies: 1,
+    hashid: item ? encodeId(item.id) : undefined,
+    collectionHashid:
+      (item?.collectionId ? encodeId(item.collectionId) : undefined) ??
+      selectedCollectionHashid ??
+      "",
+    type: (item?.type as ItemType) ?? "book",
+    title: item?.title ?? "",
+    titleAlphabetic: item?.titleAlphabetic ?? "",
+    isbn13: item?.isbn13 ?? "",
+    cover: item?.cover ?? "",
+    note: item?.note ?? "",
+    copies: item?.copies ?? 1,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -69,7 +80,7 @@ export default function AddNewItemForm({ collections, selectedCollectionHashid }
     setIsSubmitting(true);
     let item: Item;
     try {
-      item = await postAddItem(formValues);
+      item = await action(formValues);
     } catch (err) {
       alert(err);
       return;
@@ -77,7 +88,7 @@ export default function AddNewItemForm({ collections, selectedCollectionHashid }
       setIsSubmitting(false);
     }
 
-    router.push("/dashboard/collections/" + encodeId(item.collectionId));
+    router.push("/dashboard/items/" + encodeId(item.id));
     router.refresh();
   };
 

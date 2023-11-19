@@ -1,12 +1,11 @@
 import { auth } from "@auth/auth";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { decodeHashid } from "app/api/hashids";
 import prisma from "db";
 import { Metadata } from "next";
 import { cache } from "react";
-import AddNewItemForm from "./form";
+import ItemForm from "../form";
+import { postAddItem } from "../actions";
 
 export const metadata: Metadata = {
   title: "Add new item",
@@ -26,9 +25,10 @@ export default async function AddNewCollectionPage({ searchParams }: Props) {
       </section>
 
       <section className="mb4">
-        <AddNewItemForm
+        <ItemForm
           collections={collections}
           selectedCollectionHashid={searchParams?.collection as string}
+          action={postAddItem}
         />
       </section>
     </DashboardPage>
