@@ -1,4 +1,4 @@
-import { Item, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { encodeId } from "app/api/hashids";
 import Link from "next/link";
 
@@ -34,10 +34,14 @@ export default function ItemDetailTable({ item }: Props) {
             <td className="p-2">Note</td>
             <td className="p-2">{item.note ?? "-"}</td>
           </tr>
-          <tr>
-            <td className="p-2">Copies</td>
-            <td className="p-2">{item.copies}</td>
-          </tr>
+          {item.copies !== 1 ? (
+            <tr>
+              <td className="p-2">Copies</td>
+              <td className="p-2">{item.copies}</td>
+            </tr>
+          ) : (
+            <></>
+          )}
         </tbody>
       </table>
     </article>
