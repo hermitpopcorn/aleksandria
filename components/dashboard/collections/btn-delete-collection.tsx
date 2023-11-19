@@ -11,7 +11,7 @@ type Props = {
 export default function DeleteCollectionButton({ collectionHashid }: Props) {
   const router = useRouter();
 
-  const confirmDelete = function () {
+  const confirmDelete = async function () {
     const c = confirm(
       "Are you sure? All items belonging to this collection will be deleted along with it!",
     );
@@ -19,7 +19,7 @@ export default function DeleteCollectionButton({ collectionHashid }: Props) {
       return;
     }
 
-    deleteCollection(collectionHashid);
+    await deleteCollection(collectionHashid);
     router.replace("/dashboard/collections");
     router.refresh();
   };
