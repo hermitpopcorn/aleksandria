@@ -5,6 +5,7 @@ import { Collection, Item } from "@prisma/client";
 import { auth } from "@auth/auth";
 import { FormValueTypes } from "./form";
 import { decodeHashid } from "app/api/hashids";
+import { cache } from "react";
 
 export async function postAddItem(formValues: FormValueTypes): Promise<Item> {
   const collection = await findCollection(formValues.collectionHashid);
@@ -24,6 +25,16 @@ export async function postAddItem(formValues: FormValueTypes): Promise<Item> {
     },
   });
 }
+
+export const getCollections = cache(async () => {
+  const session = await auth();
+
+  return await prisma.collection.findMany({
+    where: {
+      userId: session?.user.id,
+    },
+  });
+});
 
 async function findCollection(hashid: string): Promise<Collection> {
   const session = await auth();

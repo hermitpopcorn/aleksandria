@@ -1,11 +1,8 @@
-import { auth } from "@auth/auth";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
-import prisma from "db";
 import { Metadata } from "next";
-import { cache } from "react";
 import ItemForm from "../form";
-import { postAddItem } from "../actions";
+import { getCollections, postAddItem } from "../actions";
 
 export const metadata: Metadata = {
   title: "Add new item",
@@ -34,13 +31,3 @@ export default async function AddNewCollectionPage({ searchParams }: Props) {
     </DashboardPage>
   );
 }
-
-const getCollections = cache(async () => {
-  const session = await auth();
-
-  return await prisma.collection.findMany({
-    where: {
-      userId: session?.user.id,
-    },
-  });
-});
