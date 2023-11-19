@@ -9,6 +9,7 @@ import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import AddNewItemButton from "@components/dashboard/collections/btn-add-item";
 import AlphabeticalItemsList from "@components/dashboard/items/alphabetical-list";
+import EditCollectionButton from "@components/dashboard/collections/btn-edit-collection";
 
 const findCollection = cache(async (hashid: string) => {
   const session = await auth();
@@ -57,8 +58,9 @@ export default async function CollectionDetailPage({ params }: Props) {
         <p>Type: {collection.type}</p>
       </section>
 
-      <section className="mb-4 flex flex-row justify-start">
+      <section className="mb-4 flex flex-row justify-start gap-2">
         <AddNewItemButton collectionId={collection.id} />
+        <EditCollectionButton collectionHashid={params.hashid} />
       </section>
 
       <section className="mb-4">
