@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteCollection } from "app/dashboard/collections/[hashid]/actions";
+import { deleteCollection } from "app/dashboard/collections/actions";
 import { useRouter } from "next/navigation";
 import { FaTrash } from "react-icons/fa6";
 

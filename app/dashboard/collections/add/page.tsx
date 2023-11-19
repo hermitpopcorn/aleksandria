@@ -2,7 +2,7 @@ import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { Metadata } from "next";
 import CollectionForm from "../form";
-import { postAddCollection } from "./actions";
+import { postAddCollection } from "../actions";
 
 export const metadata: Metadata = {
   title: "Add new collection",

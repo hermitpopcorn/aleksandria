@@ -2,7 +2,7 @@ import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { Metadata } from "next";
 import CollectionForm from "../../form";
-import { editExistingCollection } from "./actions";
+import { editExistingCollection } from "../../actions";
 import { cache } from "react";
 import { auth } from "@auth/auth";
 import { decodeHashid } from "app/api/hashids";
