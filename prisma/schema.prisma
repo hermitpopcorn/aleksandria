@@ -74,16 +74,17 @@ model Collection {
 }
 
 model Item {
-  id           Int       @id @default(autoincrement()) @db.UnsignedInt
-  collectionId Int       @map("collection_id") @db.UnsignedInt
-  type         String?   @db.VarChar(255)
-  title        String    @db.VarChar(255)
-  isbn13       String?   @db.VarChar(13)
-  cover        String?   @db.VarChar(255)
-  note         String?   @db.Text
-  copies       Int       @default(1) @db.Int
-  createdAt    DateTime? @default(now()) @map("created_at") @db.DateTime(0)
-  updatedAt    DateTime? @updatedAt @map("updated_at") @db.DateTime(0)
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  collectionId    Int       @map("collection_id") @db.UnsignedInt
+  type            String?   @db.VarChar(255)
+  title           String    @db.VarChar(255)
+  titleAlphabetic String?   @db.VarChar(255) @map("title_alphabetic")
+  isbn13          String?   @db.VarChar(13)
+  cover           String?   @db.VarChar(255)
+  note            String?   @db.Text
+  copies          Int       @default(1) @db.Int
+  createdAt       DateTime? @default(now()) @map("created_at") @db.DateTime(0)
+  updatedAt       DateTime? @updatedAt @map("updated_at") @db.DateTime(0)
 
   collection Collection @relation(fields: [collectionId], references: [id])
 

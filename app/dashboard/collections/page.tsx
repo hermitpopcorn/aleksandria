@@ -1,14 +1,21 @@
+import { auth } from "@auth/auth";
+import prisma from "db";
+import { Metadata } from "next";
+import { Session } from "next-auth";
 import AddNewCollectionButton from "@components/dashboard/collections/btn-add-collection";
 import CollectionsList from "@components/dashboard/collections/list";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
-import { Metadata } from "next";
+import { Collection } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Collections",
 };
 
-export default function CollectionsPage() {
+export default async function CollectionsPage() {
+  const session = await auth();
+  const collections = await getCollectionList(session!);
+
   return (
     <DashboardPage>
       <section className="mb-4">
@@ -16,7 +23,7 @@ export default function CollectionsPage() {
       </section>
 
       <section className="mb-4">
-        <CollectionsList />
+        <CollectionsList collections={collections} />
       </section>
 
       <section className="mb-4 flex flex-row justify-center">
@@ -24,4 +31,8 @@ export default function CollectionsPage() {
       </section>
     </DashboardPage>
   );
+}
+
+async function getCollectionList(session: Session): Promise<Array<Collection>> {
+  return await prisma.collection.findMany({ where: { userId: session!.user.id } });
 }

@@ -1,22 +1,19 @@
-import { auth } from "@auth/auth";
-import prisma from "db";
-import { belongsToUser } from "prisma/helpers";
 import CollectionsListItem from "./list-item";
-import { Session } from "next-auth";
+import { Collection } from "@prisma/client";
 
-export default async function CollectionsList() {
-  const session = await auth();
-  const collectionList = await getCollectionList(session!);
+type Props = {
+  collections: Array<Collection>;
+};
 
-  if (collectionList.length < 1) {
+export default async function CollectionsList({ collections }: Props) {
+  if (collections.length < 1) {
     return <p>You don't have a collection yet.</p>;
   }
 
-  return <ul>{collectionList}</ul>;
+  return <ul>{renderCollectionListItems(collections)}</ul>;
 }
 
-async function getCollectionList(user: Session) {
-  const collections = await prisma.collection.findMany({ ...belongsToUser(user) });
+function renderCollectionListItems(collections: Array<Collection>): Array<JSX.Element> {
   return collections.map((i) => (
     <li key={i.id}>
       <CollectionsListItem collection={i} />

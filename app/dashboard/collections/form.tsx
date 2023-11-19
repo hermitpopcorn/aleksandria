@@ -2,23 +2,31 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
 import { FaFloppyDisk } from "react-icons/fa6";
-import { postAddCollection } from "./actions";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
+import { Collection } from "@prisma/client";
+import { encodeId } from "app/api/hashids";
 
-type CollectionType = "books";
+type CollectionType = "book";
 
 export type FormValueTypes = {
+  hashid?: string;
   name: string;
   type: CollectionType;
 };
 
-export default function AddNewCollectionForm() {
+type Props = {
+  action: CallableFunction;
+  collection?: Collection;
+};
+
+export default function CollectionForm({ action, collection }: Props) {
   const router = useRouter();
 
   const [formValues, setFormValues] = useState<FormValueTypes>({
-    name: "",
-    type: "books",
+    hashid: collection ? encodeId(collection.id) : undefined,
+    name: collection ? collection.name : "",
+    type: collection ? (collection.type as CollectionType) : "book",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,10 +45,15 @@ export default function AddNewCollectionForm() {
     }
 
     setIsSubmitting(true);
-    await postAddCollection(formValues);
+    await action(formValues);
     setIsSubmitting(false);
 
-    router.push("/dashboard/collections");
+    router.push(
+      formValues.hashid
+        ? `/dashboard/collections/${formValues.hashid}`
+        : "/dashboard/collections",
+    );
+    router.refresh();
   };
 
   const getSubmitButton = () => {
@@ -97,7 +110,7 @@ export default function AddNewCollectionForm() {
           className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           id="input-collection-type"
         >
-          <option value="books">Books</option>
+          <option value="book">Books</option>
         </select>
       </div>
       {getSubmitButton()}

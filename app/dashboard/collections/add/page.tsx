@@ -1,7 +1,8 @@
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { Metadata } from "next";
-import AddNewCollectionForm from "./form";
+import CollectionForm from "../form";
+import { postAddCollection } from "../actions";
 
 export const metadata: Metadata = {
   title: "Add new collection",
@@ -15,7 +16,7 @@ export default function AddNewCollectionPage() {
       </section>
 
       <section className="mb4">
-        <AddNewCollectionForm />
+        <CollectionForm action={postAddCollection} />
       </section>
     </DashboardPage>
   );

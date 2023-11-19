@@ -43,6 +43,7 @@ networks:
 
 volumes:
   pnpm-store:
-    driver: local
+    name: "pnpm-store"
+    external: true
   next-mysql:
     driver: local
