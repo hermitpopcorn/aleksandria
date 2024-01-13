@@ -17,7 +17,7 @@ export default async function DashboardLayout({
       <NextAuthProvider>
         <body>
           <div className="min-h-screen flex flex-row">
-            <aside className="w-2/12 overflow-clip">
+            <aside className="w-2/12 h-screen overflow-clip sticky top-0">
               <Sidebar />
             </aside>
             <main className="w-full">{children}</main>

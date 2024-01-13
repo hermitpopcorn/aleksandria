@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaPencil } from "react-icons/fa6";
+import BaseButton from "@components/dashboard/base-button";
 
 type Props = {
   collectionHashid: string;
@@ -10,10 +11,10 @@ export default function EditCollectionButton({ collectionHashid }: Props) {
 
   return (
     <Link href={linkHref}>
-      <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded flex flex-row items-center gap-2">
+      <BaseButton className="bg-yellow-500 hover:bg-yellow-700 text-white">
         <FaPencil />
         <span>Edit this Collection</span>
-      </button>
+      </BaseButton>
     </Link>
   );
 }

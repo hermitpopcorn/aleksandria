@@ -5,9 +5,9 @@ import { FaFloppyDisk } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection, Item } from "@prisma/client";
-import { encodeId } from "app/api/hashids";
-
-type ItemType = "book";
+import { encodeCollectionId, encodeItemId } from "app/api/hashids";
+import { ItemType } from "app/types";
+import BaseButton from "@components/dashboard/base-button";
 
 export type FormValueTypes = {
   hashid?: string;
@@ -37,12 +37,12 @@ export default function ItemForm({
   const router = useRouter();
 
   const [formValues, setFormValues] = useState<FormValueTypes>({
-    hashid: item ? encodeId(item.id) : undefined,
+    hashid: item ? encodeItemId(item.id) : undefined,
     collectionHashid:
-      (item?.collectionId ? encodeId(item.collectionId) : undefined) ??
+      (item?.collectionId ? encodeCollectionId(item.collectionId) : undefined) ??
       selectedCollectionHashid ??
       "",
-    type: (item?.type as ItemType) ?? "book",
+    type: (item?.type as ItemType) ?? ItemType.Book,
     title: item?.title ?? "",
     titleAlphabetic: item?.titleAlphabetic ?? "",
     isbn13: item?.isbn13 ?? "",
@@ -54,7 +54,7 @@ export default function ItemForm({
 
   const renderCollectionOptions = () => {
     return collections.map((collection) => {
-      const hashid = encodeId(collection.id);
+      const hashid = encodeCollectionId(collection.id);
       return (
         <option key={hashid} value={hashid}>
           {collection.name}
@@ -88,7 +88,7 @@ export default function ItemForm({
       setIsSubmitting(false);
     }
 
-    router.push("/dashboard/items/" + encodeId(item.id));
+    router.push("/dashboard/items/" + encodeItemId(item.id));
     router.refresh();
   };
 
@@ -100,16 +100,13 @@ export default function ItemForm({
 
     return (
       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex flex-row justify-center">
-        <button
+        <BaseButton
           disabled={isSubmitting}
           type="submit"
-          className={classNames(
-            color,
-            "text-white font-bold py-2 px-4 rounded flex flex-row items-center gap-2",
-          )}
+          className={classNames(color, "text-white")}
         >
           <FaFloppyDisk /> Save
-        </button>
+        </BaseButton>
       </div>
     );
   };
@@ -147,10 +144,14 @@ export default function ItemForm({
             name="type"
             value={formValues.type}
             onChange={handleInput}
-            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
             id="input-item-type"
           >
-            <option value="book">Book</option>
+            {Object.values(ItemType).map((i) => (
+              <option value={i.valueOf()} className="capitalize">
+                {i.valueOf()}
+              </option>
+            ))}
           </select>
         </div>
       </div>

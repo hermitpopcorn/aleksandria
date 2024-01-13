@@ -5,14 +5,15 @@ import { FaFloppyDisk } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection } from "@prisma/client";
-import { encodeId } from "app/api/hashids";
-
-type CollectionType = "book";
+import { encodeCollectionId } from "app/api/hashids";
+import { CollectionType } from "app/types";
+import BaseButton from "@components/dashboard/base-button";
 
 export type FormValueTypes = {
   hashid?: string;
   name: string;
   type: CollectionType;
+  public: boolean;
 };
 
 type Props = {
@@ -24,17 +25,24 @@ export default function CollectionForm({ action, collection }: Props) {
   const router = useRouter();
 
   const [formValues, setFormValues] = useState<FormValueTypes>({
-    hashid: collection ? encodeId(collection.id) : undefined,
+    hashid: collection ? encodeCollectionId(collection.id) : undefined,
     name: collection ? collection.name : "",
-    type: collection ? (collection.type as CollectionType) : "book",
+    type: collection ? (collection.type as CollectionType) : CollectionType.Book,
+    public: collection ? collection.public : false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInput = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
+    const key = target.name;
+    let value: string | boolean = target.value;
+    if (key === "public") {
+      value = target.value == "1" ? true : false;
+    }
+
     setFormValues({
       ...formValues,
-      [target.name]: target.value,
+      [key]: value,
     });
   };
 
@@ -64,16 +72,13 @@ export default function CollectionForm({ action, collection }: Props) {
 
     return (
       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex flex-row justify-center">
-        <button
+        <BaseButton
           disabled={isSubmitting}
           type="submit"
-          className={classNames(
-            color,
-            "text-white font-bold py-2 px-4 rounded flex flex-row items-center gap-2",
-          )}
+          className={classNames(color, "text-white")}
         >
           <FaFloppyDisk /> Save
-        </button>
+        </BaseButton>
       </div>
     );
   };
@@ -107,12 +112,36 @@ export default function CollectionForm({ action, collection }: Props) {
           name="type"
           value={formValues.type}
           onChange={handleInput}
-          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
           id="input-collection-type"
         >
-          <option value="book">Books</option>
+          {Object.values(CollectionType).map((i) => (
+            <option value={i.valueOf()} className="capitalize">
+              {i.valueOf()}
+            </option>
+          ))}
         </select>
       </div>
+
+      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          htmlFor="input-visibility"
+        >
+          Visibility
+        </label>
+        <select
+          name="public"
+          value={formValues.public ? "1" : "0"}
+          onChange={handleInput}
+          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
+          id="input-visibility"
+        >
+          <option value="0">Private</option>
+          <option value="1">Public</option>
+        </select>
+      </div>
+
       {getSubmitButton()}
     </form>
   );

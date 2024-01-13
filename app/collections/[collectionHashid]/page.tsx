@@ -2,27 +2,22 @@ import prisma from "db";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { auth } from "@auth/auth";
 import { decodeCollectionHashid } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import AddNewItemButton from "@components/dashboard/collections/btn-add-item";
 import AlphabeticalItemsList from "@components/dashboard/items/alphabetical-list";
-import EditCollectionButton from "@components/dashboard/collections/btn-edit-collection";
-import DeleteCollectionButton from "@components/dashboard/collections/btn-delete-collection";
-import ViewCollectionPubliclyButton from "@components/dashboard/collections/btn-view-collection-publicly";
 
 const findCollection = cache(async (hashid: string) => {
-  const session = await auth();
   const id = decodeCollectionHashid(hashid);
   try {
     return await prisma.collection.findFirstOrThrow({
       where: {
-        userId: session?.user.id,
         id,
+        public: true,
       },
       include: {
+        user: true,
         items: {
           orderBy: {
             titleAlphabetic: "asc",
@@ -39,11 +34,11 @@ const findCollection = cache(async (hashid: string) => {
 });
 
 type Props = {
-  params: { hashid: string };
+  params: { collectionHashid: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata | null> {
-  const collection = await findCollection(params.hashid);
+  const collection = await findCollection(params.collectionHashid);
 
   return {
     title: `${collection?.name} Collection`,
@@ -51,28 +46,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
 }
 
 export default async function CollectionDetailPage({ params }: Props) {
-  const collection = await findCollection(params.hashid);
+  const collection = await findCollection(params.collectionHashid);
 
   return (
     <DashboardPage>
       <section className="mb-4">
-        <ContentHeader>{collection.name} Collection</ContentHeader>
-        <p>
-          Type: <span className="capitalize">{collection.type}</span>
-        </p>
-      </section>
-
-      <section className="mb-4 flex flex-row justify-start gap-2">
-        <AddNewItemButton collectionId={collection.id} />
-        <EditCollectionButton collectionHashid={params.hashid} />
-        {collection.public ? (
-          <ViewCollectionPubliclyButton collectionHashid={params.hashid} />
-        ) : null}
-        <DeleteCollectionButton collectionHashid={params.hashid} />
+        <ContentHeader>
+          {collection.user.name}'s {collection.name} Collection
+        </ContentHeader>
       </section>
 
       <section className="mb-4">
-        <AlphabeticalItemsList baseUrl="/dashboard" items={collection.items} />
+        <AlphabeticalItemsList
+          baseUrl={`/collections/${params.collectionHashid}`}
+          items={collection.items}
+        />
       </section>
     </DashboardPage>
   );

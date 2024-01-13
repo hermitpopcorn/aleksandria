@@ -2,27 +2,23 @@ import prisma from "db";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { auth } from "@auth/auth";
-import { encodeCollectionId, decodeItemHashid } from "app/api/hashids";
+import { decodeItemHashid } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import ItemDetailTable from "@components/dashboard/items/table-detail";
 import ContentSubheader from "@components/dashboard/content-subheader";
-import EditItemButton from "@components/dashboard/items/btn-edit-item";
-import DeleteItemButton from "@components/dashboard/items/btn-delete-item";
 import ReturnToCollectionButton from "@components/dashboard/items/btn-return-to-collection";
 
 const findItem = cache(async (hashid: string) => {
-  const session = await auth();
   const id = decodeItemHashid(hashid);
   try {
     return await prisma.item.findFirstOrThrow({
       where: {
-        collection: {
-          userId: session?.user.id,
-        },
         id,
+        collection: {
+          public: true,
+        },
       },
       include: {
         collection: true,
@@ -37,11 +33,11 @@ const findItem = cache(async (hashid: string) => {
 });
 
 type Props = {
-  params: { hashid: string };
+  params: { collectionHashid: string; itemHashid: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata | null> {
-  const item = await findItem(params.hashid);
+  const item = await findItem(params.itemHashid);
 
   return {
     title: `${item?.title} (${item?.collection.name})`,
@@ -49,16 +45,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
 }
 
 export default async function ItemDetailPage({ params }: Props) {
-  const item = await findItem(params.hashid);
-  const collectionHashid = encodeCollectionId(item.collectionId);
+  const item = await findItem(params.itemHashid);
 
   return (
     <DashboardPage>
       <section className="mb-2">
-        <ReturnToCollectionButton
-          baseUrl="/dashboard"
-          collectionHashid={collectionHashid}
-        />
+        <ReturnToCollectionButton baseUrl="" collectionHashid={params.collectionHashid} />
       </section>
 
       <section className="mb-4">
@@ -66,11 +58,6 @@ export default async function ItemDetailPage({ params }: Props) {
         {item.titleAlphabetic && item.titleAlphabetic != item.title ? (
           <ContentSubheader>{item.titleAlphabetic}</ContentSubheader>
         ) : null}
-      </section>
-
-      <section className="mb-4 flex flex-row justify-start gap-2">
-        <EditItemButton itemHashid={params.hashid} />
-        <DeleteItemButton itemHashid={params.hashid} />
       </section>
 
       <section className="mb-4 flex gap-4 flex-col lg:flex-row-reverse lg:justify-end">

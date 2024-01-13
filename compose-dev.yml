@@ -2,6 +2,7 @@ version: '3.5'
 
 services:
   next:
+    container_name: 'aleksandria-next'
     build:
       dockerfile: .docker/dev.Dockerfile
     ports:
