@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { auth } from "@auth/auth";
-import { decodeHashid, encodeId } from "app/api/hashids";
+import { encodeCollectionId, decodeItemHashid } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
@@ -15,7 +15,7 @@ import ReturnToCollectionButton from "@components/dashboard/items/btn-return-to-
 
 const findItem = cache(async (hashid: string) => {
   const session = await auth();
-  const id = decodeHashid(hashid);
+  const id = decodeItemHashid(hashid);
   try {
     return await prisma.item.findFirstOrThrow({
       where: {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
 
 export default async function ItemDetailPage({ params }: Props) {
   const item = await findItem(params.hashid);
-  const collectionHashid = encodeId(item.collectionId);
+  const collectionHashid = encodeCollectionId(item.collectionId);
 
   return (
     <DashboardPage>

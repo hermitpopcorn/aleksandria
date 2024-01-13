@@ -1,5 +1,5 @@
 import { Item } from "@prisma/client";
-import { encodeId } from "app/api/hashids";
+import { encodeItemId } from "app/api/hashids";
 import Link from "next/link";
 import BlankCover from "./blank-cover";
 
@@ -10,7 +10,7 @@ type Props = {
 
 export default async function AlphabeticalItemsListItem({ item, baseUrl }: Props) {
   return (
-    <Link href={`${baseUrl}/items/${encodeId(item.id)}`}>
+    <Link href={`${baseUrl}/items/${encodeItemId(item.id)}`}>
       <article className="w-48 flex flex-col items-center justify-between p-2 gap-4">
         <div className="flex flex-col justify-center h-44 items-stretch">
           {item.cover ? (

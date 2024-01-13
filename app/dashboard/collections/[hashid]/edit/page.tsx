@@ -5,14 +5,14 @@ import CollectionForm from "../../form";
 import { editExistingCollection } from "../../actions";
 import { cache } from "react";
 import { auth } from "@auth/auth";
-import { decodeHashid } from "app/api/hashids";
+import { decodeCollectionHashid } from "app/api/hashids";
 import prisma from "db";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { notFound } from "next/navigation";
 
 const findCollection = cache(async (hashid: string) => {
   const session = await auth();
-  const id = decodeHashid(hashid);
+  const id = decodeCollectionHashid(hashid);
   try {
     return await prisma.collection.findFirstOrThrow({
       where: {

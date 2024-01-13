@@ -5,7 +5,7 @@ import { FaFloppyDisk } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection } from "@prisma/client";
-import { encodeId } from "app/api/hashids";
+import { encodeCollectionId } from "app/api/hashids";
 import { CollectionType } from "app/types";
 import BaseButton from "@components/dashboard/base-button";
 
@@ -25,7 +25,7 @@ export default function CollectionForm({ action, collection }: Props) {
   const router = useRouter();
 
   const [formValues, setFormValues] = useState<FormValueTypes>({
-    hashid: collection ? encodeId(collection.id) : undefined,
+    hashid: collection ? encodeCollectionId(collection.id) : undefined,
     name: collection ? collection.name : "",
     type: collection ? (collection.type as CollectionType) : CollectionType.Book,
     public: collection ? collection.public : false,

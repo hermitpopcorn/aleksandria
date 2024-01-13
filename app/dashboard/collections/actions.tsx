@@ -4,7 +4,7 @@ import prisma from "db";
 import { Collection } from "@prisma/client";
 import { auth } from "@auth/auth";
 import { FormValueTypes } from "./form";
-import { decodeHashid } from "app/api/hashids";
+import { decodeCollectionHashid } from "app/api/hashids";
 
 export async function postAddCollection(formValues: FormValueTypes): Promise<Collection> {
   const session = await auth();
@@ -28,7 +28,7 @@ export async function editExistingCollection(
     throw new Error("No ID supplied.");
   }
 
-  const realId = decodeHashid(formValues.hashid!);
+  const realId = decodeCollectionHashid(formValues.hashid!);
 
   return await prisma.collection.update({
     where: {
@@ -46,7 +46,7 @@ export async function editExistingCollection(
 export async function deleteCollection(hashid: string): Promise<Collection> {
   const session = await auth();
 
-  const realId = decodeHashid(hashid);
+  const realId = decodeCollectionHashid(hashid);
 
   return await prisma.collection.delete({
     where: {

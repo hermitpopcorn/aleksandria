@@ -5,7 +5,7 @@ import { FaFloppyDisk } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection, Item } from "@prisma/client";
-import { encodeId } from "app/api/hashids";
+import { encodeCollectionId, encodeItemId } from "app/api/hashids";
 import { ItemType } from "app/types";
 import BaseButton from "@components/dashboard/base-button";
 
@@ -37,9 +37,9 @@ export default function ItemForm({
   const router = useRouter();
 
   const [formValues, setFormValues] = useState<FormValueTypes>({
-    hashid: item ? encodeId(item.id) : undefined,
+    hashid: item ? encodeItemId(item.id) : undefined,
     collectionHashid:
-      (item?.collectionId ? encodeId(item.collectionId) : undefined) ??
+      (item?.collectionId ? encodeCollectionId(item.collectionId) : undefined) ??
       selectedCollectionHashid ??
       "",
     type: (item?.type as ItemType) ?? ItemType.Book,
@@ -54,7 +54,7 @@ export default function ItemForm({
 
   const renderCollectionOptions = () => {
     return collections.map((collection) => {
-      const hashid = encodeId(collection.id);
+      const hashid = encodeCollectionId(collection.id);
       return (
         <option key={hashid} value={hashid}>
           {collection.name}
@@ -88,7 +88,7 @@ export default function ItemForm({
       setIsSubmitting(false);
     }
 
-    router.push("/dashboard/items/" + encodeId(item.id));
+    router.push("/dashboard/items/" + encodeItemId(item.id));
     router.refresh();
   };
 

@@ -2,14 +2,14 @@ import prisma from "db";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { decodeHashid } from "app/api/hashids";
+import { decodeCollectionHashid } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import AlphabeticalItemsList from "@components/dashboard/items/alphabetical-list";
 
 const findCollection = cache(async (hashid: string) => {
-  const id = decodeHashid(hashid);
+  const id = decodeCollectionHashid(hashid);
   try {
     return await prisma.collection.findFirstOrThrow({
       where: {

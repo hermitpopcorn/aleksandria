@@ -2,7 +2,7 @@ import prisma from "db";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { decodeHashid } from "app/api/hashids";
+import { decodeItemHashid } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
@@ -11,7 +11,7 @@ import ContentSubheader from "@components/dashboard/content-subheader";
 import ReturnToCollectionButton from "@components/dashboard/items/btn-return-to-collection";
 
 const findItem = cache(async (hashid: string) => {
-  const id = decodeHashid(hashid);
+  const id = decodeItemHashid(hashid);
   try {
     return await prisma.item.findFirstOrThrow({
       where: {

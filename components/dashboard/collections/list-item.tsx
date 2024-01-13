@@ -1,5 +1,5 @@
 import { Collection } from "@prisma/client";
-import { encodeId } from "app/api/hashids";
+import { encodeCollectionId } from "app/api/hashids";
 import { CollectionType } from "app/types";
 import Link from "next/link";
 import { FaBook, FaChevronRight } from "react-icons/fa6";
@@ -11,7 +11,7 @@ type Props = {
 
 export default async function CollectionsListItem({ collection }: Props) {
   return (
-    <Link href={`/dashboard/collections/${encodeId(collection.id)}`}>
+    <Link href={`/dashboard/collections/${encodeCollectionId(collection.id)}`}>
       <div className="border-2 p-4 mb-3 flex justify-between items-center">
         <div className="flex flex-row items-center gap-3">
           <h2 className="text-lg">{collection.name}</h2>
