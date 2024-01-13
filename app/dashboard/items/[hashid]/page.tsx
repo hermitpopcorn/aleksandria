@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { auth } from "@auth/auth";
-import { decodeHashid } from "app/api/hashids";
+import { decodeHashid, encodeId } from "app/api/hashids";
 import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
@@ -11,6 +11,7 @@ import ItemDetailTable from "@components/dashboard/items/table-detail";
 import ContentSubheader from "@components/dashboard/content-subheader";
 import EditItemButton from "@components/dashboard/items/btn-edit-item";
 import DeleteItemButton from "@components/dashboard/items/btn-delete-item";
+import ReturnToCollectionButton from "@components/dashboard/items/btn-return-to-collection";
 
 const findItem = cache(async (hashid: string) => {
   const session = await auth();
@@ -49,9 +50,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata | nu
 
 export default async function ItemDetailPage({ params }: Props) {
   const item = await findItem(params.hashid);
+  const collectionHashid = encodeId(item.collectionId);
 
   return (
     <DashboardPage>
+      <section className="mb-2">
+        <ReturnToCollectionButton collectionHashid={collectionHashid} />
+      </section>
+
       <section className="mb-4">
         <ContentHeader>{item.title}</ContentHeader>
         {item.titleAlphabetic && item.titleAlphabetic != item.title ? (
