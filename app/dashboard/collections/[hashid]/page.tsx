@@ -11,6 +11,7 @@ import AddNewItemButton from "@components/dashboard/collections/btn-add-item";
 import AlphabeticalItemsList from "@components/dashboard/items/alphabetical-list";
 import EditCollectionButton from "@components/dashboard/collections/btn-edit-collection";
 import DeleteCollectionButton from "@components/dashboard/collections/btn-delete-collection";
+import ViewCollectionPubliclyButton from "@components/dashboard/collections/btn-view-collection-publicly";
 
 const findCollection = cache(async (hashid: string) => {
   const session = await auth();
@@ -64,6 +65,9 @@ export default async function CollectionDetailPage({ params }: Props) {
       <section className="mb-4 flex flex-row justify-start gap-2">
         <AddNewItemButton collectionId={collection.id} />
         <EditCollectionButton collectionHashid={params.hashid} />
+        {collection.public ? (
+          <ViewCollectionPubliclyButton collectionHashid={params.hashid} />
+        ) : null}
         <DeleteCollectionButton collectionHashid={params.hashid} />
       </section>
 
