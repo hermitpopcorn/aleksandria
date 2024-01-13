@@ -4,6 +4,7 @@ import { encodeId } from "app/api/hashids";
 import { deleteItem } from "app/dashboard/items/actions";
 import { useRouter } from "next/navigation";
 import { FaTrash } from "react-icons/fa6";
+import BaseButton from "@components/dashboard/base-button";
 
 type Props = {
   itemHashid: string;
@@ -24,12 +25,12 @@ export default function DeleteItemButton({ itemHashid }: Props) {
   };
 
   return (
-    <button
-      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex flex-row items-center gap-2"
+    <BaseButton
+      className="bg-red-500 hover:bg-red-700 text-white"
       onClick={confirmDelete}
     >
       <FaTrash />
       <span>Delete this item</span>
-    </button>
+    </BaseButton>
   );
 }

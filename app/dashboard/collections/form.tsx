@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { Collection } from "@prisma/client";
 import { encodeId } from "app/api/hashids";
 import { CollectionType } from "app/types";
+import BaseButton from "@components/dashboard/base-button";
 
 export type FormValueTypes = {
   hashid?: string;
@@ -63,16 +64,13 @@ export default function CollectionForm({ action, collection }: Props) {
 
     return (
       <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex flex-row justify-center">
-        <button
+        <BaseButton
           disabled={isSubmitting}
           type="submit"
-          className={classNames(
-            color,
-            "text-white font-bold py-2 px-4 rounded flex flex-row items-center gap-2",
-          )}
+          className={classNames(color, "text-white")}
         >
           <FaFloppyDisk /> Save
-        </button>
+        </BaseButton>
       </div>
     );
   };
