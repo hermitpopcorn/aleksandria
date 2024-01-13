@@ -64,9 +64,22 @@ function renderAlphabeticalListItems(
   baseUrl: string,
   items: Array<Item>,
 ): Array<JSX.Element> {
+  sortItemsNaturally(items);
   return items.map((item, index) => (
     <li key={index}>
       <AlphabeticalItemsListItem baseUrl={baseUrl} item={item} />
     </li>
   ));
+}
+
+function sortItemsNaturally(items: Array<Item>) {
+  items.sort((a, b) => {
+    const titleA = a.titleAlphabetic ?? a.title;
+    const titleB = b.titleAlphabetic ?? b.title;
+
+    return titleA.localeCompare(titleB, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  });
 }
