@@ -72,7 +72,7 @@ export default async function CollectionDetailPage({ params }: Props) {
       </section>
 
       <section className="mb-4">
-        <AlphabeticalItemsList items={collection.items} />
+        <AlphabeticalItemsList baseUrl="/dashboard" items={collection.items} />
       </section>
     </DashboardPage>
   );

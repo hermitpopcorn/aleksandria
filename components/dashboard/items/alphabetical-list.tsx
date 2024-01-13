@@ -4,19 +4,20 @@ import AlphabeticalItemsListShelfLetter from "./alphabetical-list-shelf-letter";
 
 type Props = {
   items: Array<Item>;
+  baseUrl: string;
 };
 
 type Catalogue = Map<string, Array<Item>>;
 
-export default async function AlphabeticalItemsList({ items }: Props) {
+export default async function AlphabeticalItemsList({ items, baseUrl }: Props) {
   if (items.length < 1) {
     return <p>No items found.</p>;
   }
 
-  return <ol>{renderAlphabeticalList(items)}</ol>;
+  return <ol>{renderAlphabeticalList(baseUrl, items)}</ol>;
 }
 
-function renderAlphabeticalList(items: Array<Item>): Array<JSX.Element> {
+function renderAlphabeticalList(baseUrl: string, items: Array<Item>): Array<JSX.Element> {
   const cataloguedItems = catalogueItems(items);
 
   let elements: Array<JSX.Element> = [];
@@ -25,7 +26,7 @@ function renderAlphabeticalList(items: Array<Item>): Array<JSX.Element> {
       <li>
         <AlphabeticalItemsListShelfLetter>{firstLetter}</AlphabeticalItemsListShelfLetter>
         <ol className="flex flex-row flex-wrap gap-4 mb-4">
-          {renderAlphabeticalListItems(catalogueItems)}
+          {renderAlphabeticalListItems(baseUrl, catalogueItems)}
         </ol>
       </li>,
     );
@@ -59,10 +60,13 @@ function getCatalogueKeyFromTitle(title: string): string {
   return first.toUpperCase();
 }
 
-function renderAlphabeticalListItems(items: Array<Item>): Array<JSX.Element> {
+function renderAlphabeticalListItems(
+  baseUrl: string,
+  items: Array<Item>,
+): Array<JSX.Element> {
   return items.map((item) => (
     <li>
-      <AlphabeticalItemsListItem item={item} />
+      <AlphabeticalItemsListItem baseUrl={baseUrl} item={item} />
     </li>
   ));
 }
