@@ -4,10 +4,11 @@ import BaseButton from "@components/dashboard/base-button";
 
 type Props = {
   collectionHashid: string;
+  baseUrl: string;
 };
 
-export default function ReturnToCollectionButton({ collectionHashid }: Props) {
-  let linkHref = `/dashboard/collections/${collectionHashid}`;
+export default function ReturnToCollectionButton({ collectionHashid, baseUrl }: Props) {
+  let linkHref = `${baseUrl}/collections/${collectionHashid}`;
 
   return (
     <Link href={linkHref}>

@@ -55,7 +55,10 @@ export default async function ItemDetailPage({ params }: Props) {
   return (
     <DashboardPage>
       <section className="mb-2">
-        <ReturnToCollectionButton collectionHashid={collectionHashid} />
+        <ReturnToCollectionButton
+          baseUrl="/dashboard"
+          collectionHashid={collectionHashid}
+        />
       </section>
 
       <section className="mb-4">
