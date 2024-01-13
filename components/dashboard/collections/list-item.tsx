@@ -27,13 +27,13 @@ function renderIcons(collection: Collection): JSX.Element {
   const icons: JSX.Element[] = [];
 
   if (collection.type === CollectionType.Book) {
-    icons.push(<FaBook aria-label="Books" title="Books" />);
+    icons.push(<FaBook aria-label="Books" title="Books" key={icons.length} />);
   }
 
   if (collection.public) {
-    icons.push(<MdPublic aria-label="Public" title="Public" />);
+    icons.push(<MdPublic aria-label="Public" title="Public" key={icons.length} />);
   } else {
-    icons.push(<MdPublicOff aria-label="Private" title="Private" />);
+    icons.push(<MdPublicOff aria-label="Private" title="Private" key={icons.length} />);
   }
 
   return <div className="flex flex-row gap-1">{icons.map((i) => i)}</div>;

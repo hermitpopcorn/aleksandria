@@ -23,7 +23,7 @@ function renderAlphabeticalList(baseUrl: string, items: Array<Item>): Array<JSX.
   let elements: Array<JSX.Element> = [];
   cataloguedItems.forEach((catalogueItems, firstLetter) => {
     elements.push(
-      <li>
+      <li key={firstLetter}>
         <AlphabeticalItemsListShelfLetter>{firstLetter}</AlphabeticalItemsListShelfLetter>
         <ol className="flex flex-row flex-wrap gap-4 mb-4">
           {renderAlphabeticalListItems(baseUrl, catalogueItems)}
@@ -64,9 +64,22 @@ function renderAlphabeticalListItems(
   baseUrl: string,
   items: Array<Item>,
 ): Array<JSX.Element> {
-  return items.map((item) => (
-    <li>
+  sortItemsNaturally(items);
+  return items.map((item, index) => (
+    <li key={index}>
       <AlphabeticalItemsListItem baseUrl={baseUrl} item={item} />
     </li>
   ));
+}
+
+function sortItemsNaturally(items: Array<Item>) {
+  items.sort((a, b) => {
+    const titleA = a.titleAlphabetic ?? a.title;
+    const titleB = b.titleAlphabetic ?? b.title;
+
+    return titleA.localeCompare(titleB, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  });
 }
