@@ -1,6 +1,4 @@
 import { Prisma } from "@prisma/client";
-import { encodeId } from "app/api/hashids";
-import Link from "next/link";
 
 type ItemWithCollection = Prisma.ItemGetPayload<{
   include: { collection: true };
@@ -17,14 +15,7 @@ export default function ItemDetailTable({ item }: Props) {
         <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
           <tr>
             <td className="p-2">Collection</td>
-            <td className="p-2">
-              <Link
-                href={"/dashboard/collections/" + encodeId(item.collectionId)}
-                className="text-blue-800 underline"
-              >
-                {item.collection.name}
-              </Link>
-            </td>
+            <td className="p-2">{item.collection.name}</td>
           </tr>
           <tr>
             <td className="p-2">ISBN</td>
