@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection } from "@prisma/client";
 import { encodeId } from "app/api/hashids";
-
-type CollectionType = "book";
+import { CollectionType } from "app/types";
 
 export type FormValueTypes = {
   hashid?: string;
@@ -26,7 +25,7 @@ export default function CollectionForm({ action, collection }: Props) {
   const [formValues, setFormValues] = useState<FormValueTypes>({
     hashid: collection ? encodeId(collection.id) : undefined,
     name: collection ? collection.name : "",
-    type: collection ? (collection.type as CollectionType) : "book",
+    type: collection ? (collection.type as CollectionType) : CollectionType.Book,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -107,10 +106,14 @@ export default function CollectionForm({ action, collection }: Props) {
           name="type"
           value={formValues.type}
           onChange={handleInput}
-          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
           id="input-collection-type"
         >
-          <option value="book">Books</option>
+          {Object.values(CollectionType).map((i) => (
+            <option value={i.valueOf()} className="capitalize">
+              {i.valueOf()}
+            </option>
+          ))}
         </select>
       </div>
       {getSubmitButton()}

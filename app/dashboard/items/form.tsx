@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection, Item } from "@prisma/client";
 import { encodeId } from "app/api/hashids";
-
-type ItemType = "book";
+import { ItemType } from "app/types";
 
 export type FormValueTypes = {
   hashid?: string;
@@ -42,7 +41,7 @@ export default function ItemForm({
       (item?.collectionId ? encodeId(item.collectionId) : undefined) ??
       selectedCollectionHashid ??
       "",
-    type: (item?.type as ItemType) ?? "book",
+    type: (item?.type as ItemType) ?? ItemType.Book,
     title: item?.title ?? "",
     titleAlphabetic: item?.titleAlphabetic ?? "",
     isbn13: item?.isbn13 ?? "",
@@ -147,10 +146,14 @@ export default function ItemForm({
             name="type"
             value={formValues.type}
             onChange={handleInput}
-            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
             id="input-item-type"
           >
-            <option value="book">Book</option>
+            {Object.values(ItemType).map((i) => (
+              <option value={i.valueOf()} className="capitalize">
+                {i.valueOf()}
+              </option>
+            ))}
           </select>
         </div>
       </div>
