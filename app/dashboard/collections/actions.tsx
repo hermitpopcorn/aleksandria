@@ -14,6 +14,7 @@ export async function postAddCollection(formValues: FormValueTypes): Promise<Col
       userId: session!.user.id,
       name: formValues.name.trim(),
       type: formValues.type,
+      public: formValues.public,
     },
   });
 }
@@ -37,6 +38,7 @@ export async function editExistingCollection(
       userId: session!.user.id,
       name: formValues.name.trim(),
       type: formValues.type,
+      public: formValues.public,
     },
   });
 }

@@ -13,6 +13,7 @@ export type FormValueTypes = {
   hashid?: string;
   name: string;
   type: CollectionType;
+  public: boolean;
 };
 
 type Props = {
@@ -27,14 +28,21 @@ export default function CollectionForm({ action, collection }: Props) {
     hashid: collection ? encodeId(collection.id) : undefined,
     name: collection ? collection.name : "",
     type: collection ? (collection.type as CollectionType) : CollectionType.Book,
+    public: collection ? collection.public : false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInput = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
+    const key = target.name;
+    let value: string | boolean = target.value;
+    if (key === "public") {
+      value = target.value == "1" ? true : false;
+    }
+
     setFormValues({
       ...formValues,
-      [target.name]: target.value,
+      [key]: value,
     });
   };
 
@@ -114,6 +122,26 @@ export default function CollectionForm({ action, collection }: Props) {
           ))}
         </select>
       </div>
+
+      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label
+          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          htmlFor="input-visibility"
+        >
+          Visibility
+        </label>
+        <select
+          name="public"
+          value={formValues.public ? "1" : "0"}
+          onChange={handleInput}
+          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
+          id="input-visibility"
+        >
+          <option value="0">Private</option>
+          <option value="1">Public</option>
+        </select>
+      </div>
+
       {getSubmitButton()}
     </form>
   );
