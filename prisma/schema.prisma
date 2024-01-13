@@ -63,6 +63,7 @@ model Collection {
   userId    Int       @map("user_id") @db.UnsignedInt
   name      String    @db.VarChar(255)
   type      String?   @db.VarChar(255)
+  public    Boolean   @default(false)
   createdAt DateTime? @default(now()) @map("created_at") @db.DateTime(0)
   updatedAt DateTime? @updatedAt @map("updated_at") @db.DateTime(0)
 
