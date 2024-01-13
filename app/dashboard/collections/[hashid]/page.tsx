@@ -56,7 +56,9 @@ export default async function CollectionDetailPage({ params }: Props) {
     <DashboardPage>
       <section className="mb-4">
         <ContentHeader>{collection.name} Collection</ContentHeader>
-        <p>Type: {collection.type}</p>
+        <p>
+          Type: <span className="capitalize">{collection.type}</span>
+        </p>
       </section>
 
       <section className="mb-4 flex flex-row justify-start gap-2">
