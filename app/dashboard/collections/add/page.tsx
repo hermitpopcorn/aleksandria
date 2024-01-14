@@ -5,7 +5,7 @@ import CollectionForm from "../form";
 import { postAddCollection } from "../actions";
 
 export const metadata: Metadata = {
-  title: "Add new collection",
+  title: "Add new Collection",
 };
 
 export default function AddNewCollectionPage() {
