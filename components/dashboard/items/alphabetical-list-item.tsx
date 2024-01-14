@@ -10,11 +10,18 @@ type Props = {
 
 export default async function AlphabeticalItemsListItem({ item, baseUrl }: Props) {
   return (
-    <Link href={`${baseUrl}/items/${encodeItemId(item.id)}`}>
+    <Link
+      href={`${baseUrl}/items/${encodeItemId(item.id)}`}
+      aria-label={`Link to detail page for ${item.titleAlphabetic ?? item.title}`}
+    >
       <article className="w-48 flex flex-col items-center justify-between p-2 gap-4">
         <div className="flex flex-col justify-center h-44 items-stretch">
           {item.cover ? (
-            <img src={item.cover} className="max-h-full max-w-full rounded-md" />
+            <img
+              src={item.cover}
+              className="max-h-full max-w-full rounded-md"
+              alt={`Cover image for ${item.title}`}
+            />
           ) : (
             <BlankCover type={item.type} />
           )}

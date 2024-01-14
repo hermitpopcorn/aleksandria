@@ -17,12 +17,33 @@ export default function BlankCover({ type }: Props) {
 
 function renderIcon(type?: string | null): JSX.Element {
   if (type == "game") {
-    return <FaGamepad color={color} size={size} />;
+    return (
+      <FaGamepad
+        color={color}
+        size={size}
+        aria-label="Gamepad icon for a blank, unspecified cover"
+        title="Gamepad icon"
+      />
+    );
   }
 
   if (type == "music") {
-    return <FaRecordVinyl color={color} size={size} />;
+    return (
+      <FaRecordVinyl
+        color={color}
+        size={size}
+        aria-label="Record vinyl icon for a blank, unspecified cover"
+        title="Record vinyl icon"
+      />
+    );
   }
 
-  return <FaBookOpen color={color} size={size} />;
+  return (
+    <FaBookOpen
+      color={color}
+      size={size}
+      aria-label="Open book icon for a blank, unspecified cover"
+      title="Open book icon"
+    />
+  );
 }

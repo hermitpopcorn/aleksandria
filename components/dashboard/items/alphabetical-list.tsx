@@ -24,7 +24,7 @@ function renderAlphabeticalList(baseUrl: string, items: Array<Item>): Array<JSX.
   cataloguedItems.forEach((catalogueItems, firstLetter) => {
     elements.push(
       <li key={firstLetter}>
-        <AlphabeticalItemsListShelfLetter>{firstLetter}</AlphabeticalItemsListShelfLetter>
+        <AlphabeticalItemsListShelfLetter letter={firstLetter} />
         <ol className="flex flex-row flex-wrap gap-4 mb-4">
           {renderAlphabeticalListItems(baseUrl, catalogueItems)}
         </ol>
@@ -66,7 +66,10 @@ function renderAlphabeticalListItems(
 ): Array<JSX.Element> {
   sortItemsNaturally(items);
   return items.map((item, index) => (
-    <li key={index}>
+    <li
+      key={index}
+      aria-label={`List item card for ${item.titleAlphabetic ?? item.title}`}
+    >
       <AlphabeticalItemsListItem baseUrl={baseUrl} item={item} />
     </li>
   ));

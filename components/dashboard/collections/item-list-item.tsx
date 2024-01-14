@@ -12,7 +12,7 @@ export default async function ItemsListItem({ item }: Props) {
     <Link href={`/dashboard/items/${encodeItemId(item.id)}`}>
       <div className="border-2 p-4 mb-3 flex justify-between items-center">
         <h2 className="text-lg">{item.title}</h2>
-        <FaChevronRight />
+        <FaChevronRight aria-hidden />
       </div>
     </Link>
   );

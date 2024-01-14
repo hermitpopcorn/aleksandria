@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FaChevronUp } from "react-icons/fa6";
 import BaseButton from "@components/dashboard/base-button";
 
@@ -11,11 +10,9 @@ export default function ReturnToCollectionButton({ collectionHashid, baseUrl }: 
   let linkHref = `${baseUrl}/collections/${collectionHashid}`;
 
   return (
-    <Link href={linkHref}>
-      <BaseButton className="bg-gray-500 hover:bg-gray-700 text-white">
-        <FaChevronUp />
-        <span>Return to Collection</span>
-      </BaseButton>
-    </Link>
+    <BaseButton href={linkHref} className="bg-gray-500 hover:bg-gray-700 text-white">
+      <FaChevronUp aria-hidden />
+      <span>Return to Collection</span>
+    </BaseButton>
   );
 }

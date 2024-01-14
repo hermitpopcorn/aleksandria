@@ -17,7 +17,7 @@ export default async function CollectionsListItem({ collection }: Props) {
           <h2 className="text-lg">{collection.name}</h2>
           {renderIcons(collection)}
         </div>
-        <FaChevronRight />
+        <FaChevronRight aria-hidden />
       </div>
     </Link>
   );
