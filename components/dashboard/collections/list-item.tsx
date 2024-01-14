@@ -1,9 +1,9 @@
 import { Collection } from "@prisma/client";
 import { encodeCollectionId } from "app/api/hashids";
-import { CollectionType } from "app/types";
 import Link from "next/link";
-import { FaBook, FaChevronRight } from "react-icons/fa6";
+import { FaChevronRight } from "react-icons/fa6";
 import { MdPublic, MdPublicOff } from "react-icons/md";
+import CollectionIcon from "./collection-icon";
 
 type Props = {
   collection: Collection;
@@ -26,9 +26,7 @@ export default async function CollectionsListItem({ collection }: Props) {
 function renderIcons(collection: Collection): JSX.Element {
   const icons: JSX.Element[] = [];
 
-  if (collection.type === CollectionType.Books) {
-    icons.push(<FaBook aria-label="Books" title="Books" key={icons.length} />);
-  }
+  icons.push(<CollectionIcon type={collection.type} key={icons.length} />);
 
   if (collection.public) {
     icons.push(<MdPublic aria-label="Public" title="Public" key={icons.length} />);
