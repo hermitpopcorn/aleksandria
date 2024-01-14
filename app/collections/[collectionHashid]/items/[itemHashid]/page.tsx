@@ -49,7 +49,7 @@ export default async function ItemDetailPage({ params }: Props) {
 
   return (
     <DashboardPage>
-      <section className="mb-2">
+      <section className="mb-2 flex flex-row gap-2 items-center">
         <ReturnToCollectionButton baseUrl="" collectionHashid={params.collectionHashid} />
       </section>
 
