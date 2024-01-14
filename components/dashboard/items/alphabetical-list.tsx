@@ -66,7 +66,10 @@ function renderAlphabeticalListItems(
 ): Array<JSX.Element> {
   sortItemsNaturally(items);
   return items.map((item, index) => (
-    <li key={index}>
+    <li
+      key={index}
+      aria-label={`List item card for ${item.titleAlphabetic ?? item.title}`}
+    >
       <AlphabeticalItemsListItem baseUrl={baseUrl} item={item} />
     </li>
   ));
