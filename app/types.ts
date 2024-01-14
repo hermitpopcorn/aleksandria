@@ -6,4 +6,6 @@ export enum ItemType {
 
 export enum CollectionType {
   Books = "books",
+  Games = "games",
+  Music = "music",
 }
