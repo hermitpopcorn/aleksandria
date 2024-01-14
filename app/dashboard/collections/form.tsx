@@ -27,7 +27,7 @@ export default function CollectionForm({ action, collection }: Props) {
   const [formValues, setFormValues] = useState<FormValueTypes>({
     hashid: collection ? encodeCollectionId(collection.id) : undefined,
     name: collection ? collection.name : "",
-    type: collection ? (collection.type as CollectionType) : CollectionType.Book,
+    type: collection ? (collection.type as CollectionType) : CollectionType.Books,
     public: collection ? collection.public : false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);

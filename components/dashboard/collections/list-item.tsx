@@ -26,7 +26,7 @@ export default async function CollectionsListItem({ collection }: Props) {
 function renderIcons(collection: Collection): JSX.Element {
   const icons: JSX.Element[] = [];
 
-  if (collection.type === CollectionType.Book) {
+  if (collection.type === CollectionType.Books) {
     icons.push(<FaBook aria-label="Books" title="Books" key={icons.length} />);
   }
 

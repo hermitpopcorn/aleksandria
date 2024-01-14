@@ -5,5 +5,5 @@ export enum ItemType {
 }
 
 export enum CollectionType {
-  Book = "book",
+  Books = "books",
 }
