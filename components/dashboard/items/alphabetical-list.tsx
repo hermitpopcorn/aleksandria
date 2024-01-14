@@ -24,7 +24,7 @@ function renderAlphabeticalList(baseUrl: string, items: Array<Item>): Array<JSX.
   cataloguedItems.forEach((catalogueItems, firstLetter) => {
     elements.push(
       <li key={firstLetter}>
-        <AlphabeticalItemsListShelfLetter>{firstLetter}</AlphabeticalItemsListShelfLetter>
+        <AlphabeticalItemsListShelfLetter letter={firstLetter} />
         <ol className="flex flex-row flex-wrap gap-4 mb-4">
           {renderAlphabeticalListItems(baseUrl, catalogueItems)}
         </ol>
