@@ -30,7 +30,7 @@ export default function DeleteCollectionButton({ collectionHashid }: Props) {
       className="bg-red-500 hover:bg-red-700 text-white"
       onClick={confirmDelete}
     >
-      <FaTrash />
+      <FaTrash aria-hidden />
       <span>Delete this Collection</span>
     </BaseButton>
   );

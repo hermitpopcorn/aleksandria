@@ -11,7 +11,7 @@ export default function ReturnToCollectionButton({ collectionHashid, baseUrl }: 
 
   return (
     <BaseButton href={linkHref} className="bg-gray-500 hover:bg-gray-700 text-white">
-      <FaChevronUp />
+      <FaChevronUp aria-hidden />
       <span>Return to Collection</span>
     </BaseButton>
   );

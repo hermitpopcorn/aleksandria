@@ -7,7 +7,7 @@ export default function AddNewCollectionButton() {
       href="/dashboard/collections/add"
       className="bg-blue-500 hover:bg-blue-700 text-white"
     >
-      <FaRegSquarePlus />
+      <FaRegSquarePlus aria-hidden />
       <span>Add new Collection</span>
     </BaseButton>
   );

@@ -10,7 +10,7 @@ export default function EditItemButton({ itemHashid }: Props) {
 
   return (
     <BaseButton href={linkHref} className="bg-yellow-500 hover:bg-yellow-700 text-white">
-      <FaPencil />
+      <FaPencil aria-hidden />
       <span>Edit this item</span>
     </BaseButton>
   );

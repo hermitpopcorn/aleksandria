@@ -14,7 +14,7 @@ export default function AddNewItemButton({ collectionId }: Props) {
 
   return (
     <BaseButton href={linkHref} className="bg-blue-500 hover:bg-blue-700 text-white">
-      <FaRegSquarePlus />
+      <FaRegSquarePlus aria-hidden />
       <span>Add new Item</span>
     </BaseButton>
   );

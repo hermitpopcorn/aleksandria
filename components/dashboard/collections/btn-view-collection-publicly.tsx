@@ -14,7 +14,7 @@ export default function ViewCollectionPubliclyButton({ collectionHashid }: Props
       target="_blank"
       className="bg-green-600 hover:bg-green-700 text-white"
     >
-      <FaEye />
+      <FaEye aria-hidden />
       <span>View public page</span>
     </BaseButton>
   );
