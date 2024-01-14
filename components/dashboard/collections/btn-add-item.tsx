@@ -1,5 +1,4 @@
 import { encodeCollectionId } from "app/api/hashids";
-import Link from "next/link";
 import { FaRegSquarePlus } from "react-icons/fa6";
 import BaseButton from "@components/dashboard/base-button";
 
@@ -14,11 +13,9 @@ export default function AddNewItemButton({ collectionId }: Props) {
   }
 
   return (
-    <Link href={linkHref}>
-      <BaseButton className="bg-blue-500 hover:bg-blue-700 text-white">
-        <FaRegSquarePlus />
-        <span>Add new Item</span>
-      </BaseButton>
-    </Link>
+    <BaseButton href={linkHref} className="bg-blue-500 hover:bg-blue-700 text-white">
+      <FaRegSquarePlus />
+      <span>Add new Item</span>
+    </BaseButton>
   );
 }
