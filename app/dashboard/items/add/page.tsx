@@ -5,7 +5,7 @@ import ItemForm from "../form";
 import { getCollections, postAddItem } from "../actions";
 
 export const metadata: Metadata = {
-  title: "Add new item",
+  title: "Add new Item",
 };
 
 type Props = {

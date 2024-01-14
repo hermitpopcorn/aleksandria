@@ -7,6 +7,7 @@ import ContentHeader from "@components/dashboard/content-header";
 import DashboardPage from "@components/dashboard/dashboard-page";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import AlphabeticalItemsList from "@components/dashboard/items/alphabetical-list";
+import CollectionIcon from "@components/dashboard/collections/collection-icon";
 
 const findCollection = cache(async (hashid: string) => {
   const id = decodeCollectionHashid(hashid);
@@ -52,7 +53,12 @@ export default async function CollectionDetailPage({ params }: Props) {
     <DashboardPage>
       <section className="mb-4">
         <ContentHeader>
-          {collection.user.name}'s {collection.name} Collection
+          <div className="flex flex-row gap-2 items-center">
+            <CollectionIcon type={collection.type} />
+            <span>
+              {collection.user.name}'s {collection.name} Collection
+            </span>
+          </div>
         </ContentHeader>
       </section>
 

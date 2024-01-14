@@ -46,7 +46,7 @@ export default async function AddNewCollectionPage({ params }: Props) {
   return (
     <DashboardPage>
       <section className="mb-4">
-        <ContentHeader>Add new Collection</ContentHeader>
+        <ContentHeader>Edit Collection</ContentHeader>
       </section>
 
       <section className="mb4">
