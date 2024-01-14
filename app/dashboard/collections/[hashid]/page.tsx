@@ -12,6 +12,7 @@ import AlphabeticalItemsList from "@components/dashboard/items/alphabetical-list
 import EditCollectionButton from "@components/dashboard/collections/btn-edit-collection";
 import DeleteCollectionButton from "@components/dashboard/collections/btn-delete-collection";
 import ViewCollectionPubliclyButton from "@components/dashboard/collections/btn-view-collection-publicly";
+import CollectionIcon from "@components/dashboard/collections/collection-icon";
 
 const findCollection = cache(async (hashid: string) => {
   const session = await auth();
@@ -56,7 +57,12 @@ export default async function CollectionDetailPage({ params }: Props) {
   return (
     <DashboardPage>
       <section className="mb-4">
-        <ContentHeader>{collection.name} Collection</ContentHeader>
+        <ContentHeader>
+          <div className="flex flex-row gap-2 items-center">
+            <CollectionIcon type={collection.type} />
+            <span>{collection.name} Collection</span>
+          </div>
+        </ContentHeader>
         <p>
           Type: <span className="capitalize">{collection.type}</span>
         </p>
