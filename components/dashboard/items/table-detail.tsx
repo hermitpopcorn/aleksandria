@@ -17,18 +17,18 @@ export default function ItemDetailTable({ item }: Props) {
             <td className="p-2">Collection</td>
             <td className="p-2">{item.collection.name}</td>
           </tr>
-          <tr>
-            <td className="p-2">Note</td>
-            <td className="p-2">{item.note ?? "-"}</td>
-          </tr>
+          {item.note ? (
+            <tr>
+              <td className="p-2">Note</td>
+              <td className="p-2">{item.note}</td>
+            </tr>
+          ) : null}
           {item.copies !== 1 ? (
             <tr>
               <td className="p-2">Copies</td>
               <td className="p-2">{item.copies}</td>
             </tr>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </tbody>
       </table>
     </article>
