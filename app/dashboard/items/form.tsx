@@ -15,7 +15,6 @@ export type FormValueTypes = {
   type: ItemType;
   title: string;
   titleAlphabetic: string;
-  isbn13: string;
   cover: string;
   note: string;
   copies: number;
@@ -45,7 +44,6 @@ export default function ItemForm({
     type: (item?.type as ItemType) ?? ItemType.Book,
     title: item?.title ?? "",
     titleAlphabetic: item?.titleAlphabetic ?? "",
-    isbn13: item?.isbn13 ?? "",
     cover: item?.cover ?? "",
     note: item?.note ?? "",
     copies: item?.copies ?? 1,
@@ -185,22 +183,6 @@ export default function ItemForm({
           onChange={handleInput}
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           id="input-item-titleAlphabetic"
-          type="text"
-        />
-      </div>
-      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-        <label
-          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          htmlFor="input-item-isbn13"
-        >
-          ISBN
-        </label>
-        <input
-          name="isbn13"
-          value={formValues.isbn13}
-          onChange={handleInput}
-          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          id="input-item-isbn13"
           type="text"
         />
       </div>

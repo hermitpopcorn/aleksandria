@@ -18,7 +18,6 @@ export async function postAddItem(formValues: FormValueTypes): Promise<Item> {
       titleAlphabetic: formValues.titleAlphabetic.trim()
         ? formValues.titleAlphabetic.trim()
         : formValues.title.trim(),
-      isbn13: formValues.isbn13.trim() ? formValues.isbn13.trim() : null,
       note: formValues.note.trim() ? formValues.note.trim() : null,
       cover: formValues.cover.trim() ? formValues.cover.trim() : null,
       copies: formValues.copies !== undefined ? Number(formValues.copies) : 1,
@@ -73,7 +72,6 @@ export async function editExistingItem(formValues: FormValueTypes): Promise<Item
       titleAlphabetic: formValues.titleAlphabetic.trim()
         ? formValues.titleAlphabetic.trim()
         : formValues.title.trim(),
-      isbn13: formValues.isbn13.trim() ? formValues.isbn13.trim() : null,
       note: formValues.note.trim() ? formValues.note.trim() : null,
       cover: formValues.cover.trim() ? formValues.cover.trim() : null,
       copies: formValues.copies !== undefined ? Number(formValues.copies) : 1,

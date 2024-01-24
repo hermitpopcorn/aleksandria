@@ -18,10 +18,6 @@ export default function ItemDetailTable({ item }: Props) {
             <td className="p-2">{item.collection.name}</td>
           </tr>
           <tr>
-            <td className="p-2">ISBN</td>
-            <td className="p-2">{item.isbn13 ?? "-"}</td>
-          </tr>
-          <tr>
             <td className="p-2">Note</td>
             <td className="p-2">{item.note ?? "-"}</td>
           </tr>
