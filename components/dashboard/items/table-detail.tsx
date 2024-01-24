@@ -1,8 +1,4 @@
-import { Prisma } from "@prisma/client";
-
-type ItemWithCollection = Prisma.ItemGetPayload<{
-  include: { collection: true };
-}>;
+import { ItemWithCollection } from "prisma/types";
 
 type Props = {
   item: ItemWithCollection;
