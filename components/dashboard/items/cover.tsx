@@ -11,7 +11,7 @@ export default function ItemCover({ item }: Props) {
         <div className="grow flex flex-row justify-center p-4">
           <img
             src={item.cover}
-            className="max-w-md max-h-screen rounded-xl"
+            className="min-w-24 max-w-md max-h-screen rounded-xl"
             alt="Cover image"
           />
         </div>
