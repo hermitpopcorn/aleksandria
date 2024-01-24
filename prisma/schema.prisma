@@ -87,8 +87,21 @@ model Item {
   updatedAt       DateTime? @updatedAt @map("updated_at") @db.DateTime(0)
 
   collection Collection @relation(fields: [collectionId], references: [id])
+  infos ItemInformation[]
 
   @@index([collectionId])
   @@index([title])
   @@map("items")
+}
+
+model ItemInformation {
+  id     Int @id @default(autoincrement()) @db.UnsignedInt
+  itemId Int @map("item_id") @db.UnsignedInt
+  label  String @db.VarChar(255)
+  info   String @db.VarChar(255)
+
+  item Item @relation(fields: [itemId], references: [id])
+
+  @@index([itemId])
+  @@map("item_informations")
 }
