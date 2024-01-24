@@ -80,7 +80,6 @@ model Item {
   type            String?   @db.VarChar(255)
   title           String    @db.VarChar(255)
   titleAlphabetic String?   @db.VarChar(255) @map("title_alphabetic")
-  isbn13          String?   @db.VarChar(13)
   cover           String?   @db.VarChar(255)
   note            String?   @db.Text
   copies          Int       @default(1) @db.Int
