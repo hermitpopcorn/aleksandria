@@ -9,6 +9,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import ItemDetailTable from "@components/dashboard/items/table-detail";
 import ContentSubheader from "@components/dashboard/content-subheader";
 import ReturnToCollectionButton from "@components/dashboard/items/btn-return-to-collection";
+import ItemCover from "@components/dashboard/items/cover";
 
 const findItem = cache(async (hashid: string) => {
   const id = decodeItemHashid(hashid);
@@ -61,15 +62,7 @@ export default async function ItemDetailPage({ params }: Props) {
       </section>
 
       <section className="mb-4 flex gap-4 flex-col lg:flex-row-reverse lg:justify-end">
-        {item.cover ? (
-          <div className="grow flex flex-row justify-center p-4">
-            <img
-              src={item.cover}
-              className="max-w-md max-h-screen rounded-xl"
-              alt="Cover image"
-            />
-          </div>
-        ) : null}
+        <ItemCover item={item} />
         <ItemDetailTable item={item} />
       </section>
     </DashboardPage>
