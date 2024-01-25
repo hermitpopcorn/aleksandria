@@ -1,7 +1,7 @@
-import { ItemWithCollection } from "prisma/types";
+import { ItemWithCollectionAndInformations } from "prisma/types";
 
 type Props = {
-  item: ItemWithCollection;
+  item: ItemWithCollectionAndInformations;
 };
 
 export default function ItemDetailTable({ item }: Props) {
@@ -25,6 +25,12 @@ export default function ItemDetailTable({ item }: Props) {
               <td className="p-2">{item.copies}</td>
             </tr>
           ) : null}
+          {item.infos.map((i, index) => (
+            <tr key={index}>
+              <td className="p-2">{i.label}</td>
+              <td className="p-2">{i.info}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </article>
