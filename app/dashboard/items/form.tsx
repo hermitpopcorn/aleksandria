@@ -145,8 +145,8 @@ export default function ItemForm({
             className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
             id="input-item-type"
           >
-            {Object.values(ItemType).map((i) => (
-              <option value={i.valueOf()} className="capitalize">
+            {Object.values(ItemType).map((i, index) => (
+              <option value={i.valueOf()} className="capitalize" key={index}>
                 {i.valueOf()}
               </option>
             ))}
