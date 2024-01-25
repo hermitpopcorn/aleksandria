@@ -27,6 +27,7 @@ const findItem = cache(async (hashid: string) => {
       },
       include: {
         collection: true,
+        infos: true,
       },
     });
   } catch (err) {
