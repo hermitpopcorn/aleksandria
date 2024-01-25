@@ -115,8 +115,8 @@ export default function CollectionForm({ action, collection }: Props) {
           className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
           id="input-collection-type"
         >
-          {Object.values(CollectionType).map((i) => (
-            <option value={i.valueOf()} className="capitalize">
+          {Object.values(CollectionType).map((i, index) => (
+            <option value={i.valueOf()} className="capitalize" key={index}>
               {i.valueOf()}
             </option>
           ))}

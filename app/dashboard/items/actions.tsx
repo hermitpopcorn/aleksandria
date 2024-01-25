@@ -1,14 +1,30 @@
 "use server";
 
 import prisma from "db";
-import { Collection, Item } from "@prisma/client";
+import { Collection, Item, Prisma } from "@prisma/client";
 import { auth } from "@auth/auth";
 import { FormValueTypes } from "./form";
 import { decodeCollectionHashid, decodeItemHashid } from "app/api/hashids";
 import { cache } from "react";
 
+type ItemInfo = { label: string; info: string };
+
+function sanitizeInfos(infos: { label?: string; info?: string }[]): ItemInfo[] {
+  let filtered: ItemInfo[] = [];
+  infos.map((v) => {
+    if (!v.label || !v.info) {
+      return;
+    }
+    filtered.push({ label: v.label, info: v.info });
+  });
+
+  return filtered;
+}
+
 export async function postAddItem(formValues: FormValueTypes): Promise<Item> {
   const collection = await findCollection(formValues.collectionHashid);
+
+  let infos: ItemInfo[] = sanitizeInfos(formValues.infos);
 
   return await prisma.item.create({
     data: {
@@ -18,10 +34,10 @@ export async function postAddItem(formValues: FormValueTypes): Promise<Item> {
       titleAlphabetic: formValues.titleAlphabetic.trim()
         ? formValues.titleAlphabetic.trim()
         : formValues.title.trim(),
-      isbn13: formValues.isbn13.trim() ? formValues.isbn13.trim() : null,
       note: formValues.note.trim() ? formValues.note.trim() : null,
       cover: formValues.cover.trim() ? formValues.cover.trim() : null,
       copies: formValues.copies !== undefined ? Number(formValues.copies) : 1,
+      infos: infos ? { create: infos } : undefined,
     },
   });
 }
@@ -59,7 +75,11 @@ export async function editExistingItem(formValues: FormValueTypes): Promise<Item
 
   const collection = await findCollection(formValues.collectionHashid);
 
-  return await prisma.item.update({
+  let infos: ItemInfo[] = sanitizeInfos(formValues.infos);
+
+  const clearExistingInfos = deleteInfosForItem(realId);
+
+  const update = prisma.item.update({
     where: {
       collection: {
         userId: session!.user.id,
@@ -73,12 +93,15 @@ export async function editExistingItem(formValues: FormValueTypes): Promise<Item
       titleAlphabetic: formValues.titleAlphabetic.trim()
         ? formValues.titleAlphabetic.trim()
         : formValues.title.trim(),
-      isbn13: formValues.isbn13.trim() ? formValues.isbn13.trim() : null,
       note: formValues.note.trim() ? formValues.note.trim() : null,
       cover: formValues.cover.trim() ? formValues.cover.trim() : null,
       copies: formValues.copies !== undefined ? Number(formValues.copies) : 1,
+      infos: infos ? { create: infos } : undefined,
     },
   });
+
+  const result = await prisma.$transaction([clearExistingInfos, update]);
+  return result[1];
 }
 
 export async function deleteItem(hashid: string): Promise<Item> {
@@ -86,12 +109,25 @@ export async function deleteItem(hashid: string): Promise<Item> {
 
   const realId = decodeItemHashid(hashid);
 
-  return await prisma.item.delete({
+  const clearExistingInfos = deleteInfosForItem(realId);
+
+  const del = prisma.item.delete({
     where: {
       collection: {
         userId: session!.user.id,
       },
       id: realId,
+    },
+  });
+
+  const result = await prisma.$transaction([clearExistingInfos, del]);
+  return result[1];
+}
+
+function deleteInfosForItem(id: any): Prisma.PrismaPromise<Prisma.BatchPayload> {
+  return prisma.itemInformation.deleteMany({
+    where: {
+      itemId: id,
     },
   });
 }

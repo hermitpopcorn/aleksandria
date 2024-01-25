@@ -21,6 +21,9 @@ const findItem = cache(async (hashid: string) => {
         },
         id,
       },
+      include: {
+        infos: true,
+      },
     });
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {

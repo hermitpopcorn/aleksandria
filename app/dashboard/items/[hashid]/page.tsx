@@ -12,6 +12,7 @@ import ContentSubheader from "@components/dashboard/content-subheader";
 import EditItemButton from "@components/dashboard/items/btn-edit-item";
 import DeleteItemButton from "@components/dashboard/items/btn-delete-item";
 import ReturnToCollectionButton from "@components/dashboard/items/btn-return-to-collection";
+import ItemCover from "@components/dashboard/items/cover";
 
 const findItem = cache(async (hashid: string) => {
   const session = await auth();
@@ -26,6 +27,7 @@ const findItem = cache(async (hashid: string) => {
       },
       include: {
         collection: true,
+        infos: true,
       },
     });
   } catch (err) {
@@ -74,15 +76,7 @@ export default async function ItemDetailPage({ params }: Props) {
       </section>
 
       <section className="mb-4 flex gap-4 flex-col lg:flex-row-reverse lg:justify-end">
-        {item.cover ? (
-          <div className="grow flex flex-row justify-center p-4">
-            <img
-              src={item.cover}
-              className="max-w-md max-h-screen rounded-xl"
-              alt="Cover image"
-            />
-          </div>
-        ) : null}
+        <ItemCover item={item} />
         <ItemDetailTable item={item} />
       </section>
     </DashboardPage>

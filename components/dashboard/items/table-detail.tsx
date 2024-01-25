@@ -1,11 +1,7 @@
-import { Prisma } from "@prisma/client";
-
-type ItemWithCollection = Prisma.ItemGetPayload<{
-  include: { collection: true };
-}>;
+import { ItemWithCollectionAndInformations } from "prisma/types";
 
 type Props = {
-  item: ItemWithCollection;
+  item: ItemWithCollectionAndInformations;
 };
 
 export default function ItemDetailTable({ item }: Props) {
@@ -17,22 +13,24 @@ export default function ItemDetailTable({ item }: Props) {
             <td className="p-2">Collection</td>
             <td className="p-2">{item.collection.name}</td>
           </tr>
-          <tr>
-            <td className="p-2">ISBN</td>
-            <td className="p-2">{item.isbn13 ?? "-"}</td>
-          </tr>
-          <tr>
-            <td className="p-2">Note</td>
-            <td className="p-2">{item.note ?? "-"}</td>
-          </tr>
+          {item.note ? (
+            <tr>
+              <td className="p-2">Note</td>
+              <td className="p-2">{item.note}</td>
+            </tr>
+          ) : null}
           {item.copies !== 1 ? (
             <tr>
               <td className="p-2">Copies</td>
               <td className="p-2">{item.copies}</td>
             </tr>
-          ) : (
-            <></>
-          )}
+          ) : null}
+          {item.infos.map((i, index) => (
+            <tr key={index}>
+              <td className="p-2">{i.label}</td>
+              <td className="p-2">{i.info}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </article>

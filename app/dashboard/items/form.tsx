@@ -1,13 +1,15 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { FaFloppyDisk } from "react-icons/fa6";
+import { FaFloppyDisk, FaRegSquarePlus } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { Collection, Item } from "@prisma/client";
 import { encodeCollectionId, encodeItemId } from "app/api/hashids";
 import { ItemType } from "app/types";
 import BaseButton from "@components/dashboard/base-button";
+import { ItemWithInformations } from "prisma/types";
+import CreatableSelect from "react-select/creatable";
 
 export type FormValueTypes = {
   hashid?: string;
@@ -15,17 +17,17 @@ export type FormValueTypes = {
   type: ItemType;
   title: string;
   titleAlphabetic: string;
-  isbn13: string;
   cover: string;
   note: string;
   copies: number;
+  infos: { label: string; info: string }[];
 };
 
 type Props = {
   collections: Array<Collection>;
   selectedCollectionHashid?: string;
   action: CallableFunction;
-  item?: Item;
+  item?: ItemWithInformations;
 };
 
 export default function ItemForm({
@@ -45,10 +47,10 @@ export default function ItemForm({
     type: (item?.type as ItemType) ?? ItemType.Book,
     title: item?.title ?? "",
     titleAlphabetic: item?.titleAlphabetic ?? "",
-    isbn13: item?.isbn13 ?? "",
     cover: item?.cover ?? "",
     note: item?.note ?? "",
     copies: item?.copies ?? 1,
+    infos: item?.infos ?? [{ label: "", info: "" }],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -68,6 +70,37 @@ export default function ItemForm({
     setFormValues({
       ...formValues,
       [target.name]: target.value,
+    });
+  };
+
+  const addInfo = () => {
+    const infos = formValues.infos;
+    infos.push({ label: "", info: "" });
+
+    setFormValues({
+      ...formValues,
+      infos,
+    });
+  };
+
+  const handleInfoLabelInput = (index: number, label?: string) => {
+    const infos = formValues.infos;
+    infos[index].label = label ? label : "";
+
+    setFormValues({
+      ...formValues,
+      infos,
+    });
+  };
+
+  const handleInfoValueInput = (e: ChangeEvent, index: number) => {
+    const infos = formValues.infos;
+    const target = e.target as HTMLInputElement;
+    infos[index].info = target.value;
+
+    setFormValues({
+      ...formValues,
+      infos,
     });
   };
 
@@ -147,8 +180,8 @@ export default function ItemForm({
             className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 p-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 capitalize"
             id="input-item-type"
           >
-            {Object.values(ItemType).map((i) => (
-              <option value={i.valueOf()} className="capitalize">
+            {Object.values(ItemType).map((i, index) => (
+              <option value={i.valueOf()} className="capitalize" key={index}>
                 {i.valueOf()}
               </option>
             ))}
@@ -185,22 +218,6 @@ export default function ItemForm({
           onChange={handleInput}
           className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           id="input-item-titleAlphabetic"
-          type="text"
-        />
-      </div>
-      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-        <label
-          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          htmlFor="input-item-isbn13"
-        >
-          ISBN
-        </label>
-        <input
-          name="isbn13"
-          value={formValues.isbn13}
-          onChange={handleInput}
-          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          id="input-item-isbn13"
           type="text"
         />
       </div>
@@ -251,6 +268,57 @@ export default function ItemForm({
           type="number"
         />
       </div>
+      <section>
+        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+            Additional Information
+          </label>
+          <div>
+            {formValues.infos.map((info, index) => (
+              <div className="flex flex-row justify-center gap-4" key={index}>
+                <div className="w-3/12 flex items-center justify-center">
+                  <CreatableSelect
+                    instanceId={`input-item-info-label-${index}`}
+                    unstyled
+                    defaultValue={{ label: info.label, value: info.label }}
+                    onChange={(value) => handleInfoLabelInput(index, value?.value)}
+                    className="w-full mb-3 appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    classNames={{
+                      control: (props): string =>
+                        classNames(
+                          "py-3 px-4 border text-gray-700 rounded leading-tight",
+                          props.isFocused
+                            ? "outline-none bg-white border-gray-500"
+                            : "bg-gray-200 border-gray-200",
+                        ),
+                      menu: (_): string => "p-1 bg-white border border-gray-500",
+                      menuList: (_): string => "py-1 px-2 hover:bg-gray-200",
+                    }}
+                    options={[{ value: "ISBN", label: "ISBN" }]}
+                  />
+                </div>
+                <div className="w-9/12">
+                  <input
+                    value={info.info}
+                    onChange={(e) => handleInfoValueInput(e, index)}
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                    type="text"
+                    id={`input-item-info-${index}`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <BaseButton
+            className="bg-blue-500 hover:bg-blue-700 text-white"
+            type="button"
+            onClick={addInfo}
+          >
+            <FaRegSquarePlus aria-hidden />
+            <span>Add more information</span>
+          </BaseButton>
+        </div>
+      </section>
       {getSubmitButton()}
     </form>
   );
